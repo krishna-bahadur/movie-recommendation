@@ -1,0 +1,73 @@
+{% extends 'base.html' %}{% block content%}
+
+<div class="container details my-5">
+  <div class="row ">
+    <div class="col-md-6 card p-0">
+      <img src="{{movie.imageUrl}}" class="rounded" style="height:500px">
+    </div>
+    <div class="col-md-6 mt-4">
+      <div>
+        <h1 class="border shadow-lg p-2 mb-3 rounded"><u>{{movie.title}}</u></h1>
+      </div>
+      <div class="my-4">
+        <h5>Genre: {{ movie.genres }} </h5>
+      </div>
+      <div class="my-4">
+        <h5>Price: ${{ movie.budget }}</h5>
+      </div>
+      {% if request.user.is_authenticated%}
+      <div class="my-4">
+        {% if not context.is_favourite %}
+        <a href="/add_to_favorite/{{movie.id}}" class="btn btn-success">Add to favorite</a>
+        {% else %}
+        <a href="/remove_from_favorite/{{movie.id}}" class="btn btn-danger">Remove from favorite</a>
+        {% endif %}
+      </div>
+     
+      <div class="my-5">
+        <form method="post" action="/movie_detail/{{movie.id}}">
+          {% csrf_token %}
+          {{ review_form.as_p}}
+          <input type="submit" class="btn btn-outline-success" value="Add Review">
+  
+        </form>
+      </div>
+      {% endif %}
+
+    </div>
+   
+   
+
+  </div>
+  <div class="realtedMovies my-2">
+    <h2>Related Movies:</h2>
+  </div>
+  <div class="row no-gutters">
+    {% for m in recommended_movies %}
+    <div class="col-md-3 my-3 products">
+      <a href="/movie_detail/{{m.id}}">
+        <div class="card">
+          <img src="{{m.imageUrl}}" class="card-img" />
+          <div class="card-body">
+            <h5 class="card-title">{{m.title}}</h5>
+            <h6>${{ m.budget }}</h6>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="container p-0">
+    <h3>Reviews:⭐⭐⭐⭐⭐</h3>
+    {% for r in reviews %}
+    <div class="review py-2 px-3 my-2">
+      <u>
+        <span>{{r.user.username}}</span>
+        <span>{{r.created_at}}</span>
+      </u>
+      <div>{{r.review}}</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

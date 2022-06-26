@@ -1,0 +1,14 @@
+<nav aria-label="Page navigation example" class="page_num">
+    <ul class="pagination justify-content-center">
+        <li class="page-item disabled">
+            {% if pagination.current_page > 1%}
+            <a href="/movie_list/{{pagination.previous_page}}" class="p-2">Previous page</a>
+            {% endif %}
+        </li>
+        <li class="page-item mx-2" >
+            {% if pagination.current_page != pagination.last_page %}
+            <a href="/movie_list/{{pagination.next_page}}" class="p-2">Next page</a>
+            {% endif%}
+        </li>
+    </ul>
+  </nav>
